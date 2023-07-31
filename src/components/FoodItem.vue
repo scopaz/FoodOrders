@@ -1,14 +1,9 @@
 <template>
     <div>
       <ul>
-        <li v-for="foodtype in fooditems" :key="foodtype.foodItemID">
-          {{ foodtype.name }}
-          <ul>
-            <li v-for="fooditem in foodtype.foodItems" :key="fooditem.foodItemID">
-              {{ fooditem.name }}
-            </li>
-          </ul>
-        </li>
+              <li>{{ fooditem.name }}</li>
+              <li>{{ fooditem.description }}</li>
+              <li>{{ fooditem.price }}</li>
       </ul>
     </div>
   </template>
@@ -16,7 +11,7 @@
   <script>
   export default {
     props: {
-      fooditems: {
+      fooditem: {
         type: Object,
         required: true,
       },

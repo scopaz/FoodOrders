@@ -1,6 +1,8 @@
 <template>
-    <div>
-      <FoodItem v-if="fooditems" :fooditems="fooditems" />
+    {{ foodtype.name }}
+    <div v-if="foodtype">
+        
+      <FoodItem v-for="fooditem in foodtype.foodItems" :key="fooditem.foodItemID" :fooditem="fooditem" />
       
     </div>
   </template>
@@ -13,20 +15,20 @@
       FoodItem,
     },
     props: {
-      foodtypes: {
+      foodtype: {
         type: Object,
         required: true,
       },
     },
     setup(props) {
-      const fooditems = ref({}); // Use a reactive reference (ref) here
+      const foodtype = ref({}); // Use a reactive reference (ref) here
       
       onMounted(() => {
-        fooditems.value = props.foodtypes; // Assign the value to fooditems.value
+        foodtype.value = props.foodtype; // Assign the value to fooditems.value
       });
 
       return {
-        fooditems, // Return the reactive reference as part of an object
+        foodtype, // Return the reactive reference as part of an object
       };
     },
   };

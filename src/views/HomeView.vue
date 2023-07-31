@@ -1,5 +1,7 @@
 <template>
-    <FoodType v-if="foodtypes" :foodtypes="foodtypes" />
+   <div  v-if="foodtypes">
+      <FoodType v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" :foodtype="foodtype" />
+  </div>
     <div v-else>Loading...</div>
 </template>
 
