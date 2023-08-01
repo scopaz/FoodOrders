@@ -12,7 +12,7 @@
 
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue';
-
+import { useStore } from 'vuex';
 const Operations = {
   Minus: 'minus',
   Plus: 'plus',
@@ -26,11 +26,11 @@ const { fooditem } = defineProps(['fooditem']);
 // Declare the emits using the `defineEmits` function
 const emit = defineEmits();
 
+const store = useStore();
 const handleClick = (operator) => {
   if(operator == Operations.Minus && quantity.value > 0) quantity.value--;
   if(operator == Operations.Plus) quantity.value++;
-  if(quantity.value != 0)
-    // Emit the "select" event with the selected food item as the payload
-    emit('select', fooditem);
+      // Dispatch an action to add the selected food item and quantity to the store
+      store.commit('addToSelectedFoodItems', { fooditem, quantity: operator });
 };
 </script>

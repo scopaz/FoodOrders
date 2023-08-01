@@ -1,22 +1,16 @@
 import { createStore } from 'vuex'; // Import createStore from Vuex
 
 const store = createStore({
-  state() {
-    return {
-      token: null,
-    };
+  state: {
+    selectedFoodItems: [],
   },
   mutations: {
-    setToken(state, token) {
-      state.token = token;
+    addToSelectedFoodItems(state, payload) {
+      state.selectedFoodItems.push(payload);
     },
   },
-  actions: {
-    // You can add other actions to handle login, logout, etc., if needed
-  },
-  getters: {
-    getToken: state => state.token,
-  },
+  actions: {},
+  getters: {},
 });
 
 export default store;
