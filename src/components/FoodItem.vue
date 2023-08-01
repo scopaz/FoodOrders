@@ -8,14 +8,7 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    props: {
-      fooditem: {
-        type: Object,
-        required: true,
-      },
-    },
-  };
+  <script setup>
+    const { fooditem } = defineProps(['fooditem']);
   </script>
   
