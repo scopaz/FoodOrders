@@ -2,7 +2,7 @@
   <div>
     <div v-if="foodtypes">
       <!-- Render the list of food types -->
-      <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)">
+      <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" >
         {{ foodtype.name }}
       </button>
     </div>
@@ -15,6 +15,9 @@
       <FoodType :foodtype="selectedFoodType" /> 
     </div>
   </div>
+
+
+  <div>Total : {{ total }}</div>
 </template>
 
 
@@ -23,7 +26,7 @@ import FoodType from '../components/FoodType.vue' // Import the FoodItem compone
 import {getFoodItems} from "../api/foodOrders.api"
 import { ref, onMounted } from 'vue';
 
-
+const total = ref(0);
 const foodtypes = ref(null);
 const selectedFoodType = ref(null);
 
