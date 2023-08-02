@@ -6,7 +6,7 @@
       Totale : 40 DH
       In Progress
 
-      Complete
+      <button> Complete </button>
       -------------------------------
       CustomerName2
       Sandwish nugget * 2
@@ -14,7 +14,26 @@
       Totale : 30 DH
       In Progress
 
-      Complete
+      <button> Complete </button>
 
+
+      
     </div>
   </template>
+
+<script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+export default {
+  setup() {
+    const store = useStore();
+    
+
+
+    return {
+
+    };
+  },
+};
+</script>

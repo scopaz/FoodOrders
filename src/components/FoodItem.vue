@@ -31,6 +31,6 @@ const handleClick = (operator) => {
   if(operator == Operations.Minus && quantity.value > 0) quantity.value--;
   if(operator == Operations.Plus) quantity.value++;
       // Dispatch an action to add the selected food item and quantity to the store
-      store.commit('addToSelectedFoodItems', { fooditem, quantity: operator });
+      store.commit('fooditem/addToSelectedFoodItems', { fooditem, quantity: operator });
 };
 </script>

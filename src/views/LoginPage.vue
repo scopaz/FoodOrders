@@ -23,12 +23,16 @@
 import { ref } from 'vue';
 import {getCustomers, login} from "../api/foodOrders.api"
 import { useRouter } from 'vue-router'; // Import the useRouter function from vue-router
+import { mapMutations } from 'vuex';
+import jwt_decode from 'jwt-decode';
+import { useStore } from 'vuex';
 export default {
   setup() {
     const email = ref('');
     const password = ref('');
     const token = ref(null);
     const router = useRouter(); // Get the router instance
+    const store = useStore();
 
     const submitForm = async () => {
       try {
@@ -38,7 +42,27 @@ export default {
         // Set the token with the obtained value
         token.value = response.token;
 
-        // Navigate to '/home' route using the router
+        // Store the user data in localStorage
+
+        // Decode the JWT token to access the claims
+        const decodedToken = jwt_decode(token.value);
+        console.log(decodedToken);
+
+        var userData = {
+          username: decodedToken.username,
+          email: decodedToken.email,
+          firstname: decodedToken.firstname,
+          lastname: decodedToken.lastname,
+        }
+
+         // Access the claims from the decoded token and set them in Vuex store
+        store.commit('user/setUserInfo', userData);
+        console.log(userData)
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+
+
+        // Navigate to '/home' or 'admin' route using the router
         router.push('/admin');
 
         // Reset the form after successful submission
