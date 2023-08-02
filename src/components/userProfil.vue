@@ -8,12 +8,10 @@
       </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-export default {
-  setup() {
     const store = useStore();
     
     // persist data to locaStorage (data not gone after refresh)
@@ -23,10 +21,5 @@ export default {
     // Define a computed property to access the userInfo from the store (for future uses)
     const userInfo = computed(() => store.getters['user/getUserInfo']);
 
-    return {
-      userInfo, 
-      userData
-    };
-  },
-};
+ 
 </script>

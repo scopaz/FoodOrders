@@ -1,6 +1,5 @@
 <template>
-  <user-profil />
-
+<user-profil />
   <div>
     <div v-if="foodtypes">
       <!-- Render the list of food types -->
@@ -14,7 +13,7 @@
 
     <!-- Render the selected food type and its food item -->
     <div v-if="selectedFoodType">
-      <FoodType :foodtype="selectedFoodType" /> 
+      <food-type :foodtype="selectedFoodType" /> 
     </div>
   </div>
 
@@ -26,6 +25,7 @@
 
 
 <script setup>
+import UserProfil from '../components/UserProfil.vue';
 import FoodType from '../components/FoodType.vue';
 import { getFoodItems, createOrder } from '../api/foodOrders.api';
 import { ref, onMounted } from 'vue';
