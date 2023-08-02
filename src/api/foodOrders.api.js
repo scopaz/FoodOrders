@@ -61,7 +61,7 @@ export const getFoodItems = async () => {
 
 export const createOrder = async (order) => {
   try {
-      const response = await apiClient.post('/order', order);
+      const response = await apiClient.post('/order/create-order', order);
       return response;
   } catch (error) {
       console.error('Error fetching foodItems:', error);

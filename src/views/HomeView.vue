@@ -24,19 +24,20 @@
 
 
 <script setup>
-import FoodType from '../components/FoodType.vue' // Import the FoodItem component
-import {getFoodItems, createOrder} from "../api/foodOrders.api"
+import FoodType from '../components/FoodType.vue';
+import { getFoodItems, createOrder } from '../api/foodOrders.api';
 import { ref, onMounted } from 'vue';
-import { computed } from '@vue/reactivity'; // Import computed from @vue/reactivity package
+import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
 import { getTimeForMorocco } from '../helper/timeUtils';
+
 const foodtypes = ref(null);
 const selectedFoodType = ref(null);
 
 const fetchFoodItems = async () => {
   try {
-    const response = await getFoodItems(); // 
-    foodtypes.value = response.data; // Assuming the API returns an array of food items
+    const response = await getFoodItems();
+    foodtypes.value = response.data;
   } catch (error) {
     console.error('Error fetching food items:', error);
   }
@@ -46,45 +47,60 @@ onMounted(() => {
   fetchFoodItems();
 });
 
-// Function to set the selected food type
 const selectFoodType = (foodtype) => {
   selectedFoodType.value = foodtype;
 };
 
 const store = useStore();
-// Use a computed property to get the selected food items from the Vuex store
 const selectedFoodItems = computed(() => store.state.selectedFoodItems);
 
-// Compute the total price of selected food items
 const total = computed(() => {
   let totalPrice = selectedFoodItems.value.reduce((acc, item) => {
     const quantity = item.quantity === 'minus' ? -1 : 1;
     return acc + quantity * item.fooditem.price;
   }, 0);
 
-  // Ensure that the total price is not less than 0
   totalPrice = Math.max(totalPrice, 0);
-
-  // Format the total price to 2 decimal places
   return totalPrice.toFixed(2);
-
 });
 
-
 const commander = async () => {
-  
-    const order = {
-    "CustomerName" :"customerName", 
-    "OrderDate": await getTimeForMorocco(), 
-    "TotalAmount": total.value,
-    "Status": "In Progress"
+  // Create an object to store the aggregated quantities for each FoodItemId
+  const aggregatedQuantities = {};
+
+  // Loop through selectedFoodItems.value and aggregate the quantities
+  selectedFoodItems.value.forEach(item => {
+    const foodItemId = item.fooditem.foodItemID;
+    const quantity = item.quantity === 'minus' ? -1 : 1;
+
+    // If the FoodItemId already exists in the object, add the quantity to the existing value
+    if (aggregatedQuantities.hasOwnProperty(foodItemId)) {
+      aggregatedQuantities[foodItemId] += quantity;
+    } else {
+      // If the FoodItemId is not in the object, initialize it with the quantity
+      aggregatedQuantities[foodItemId] = quantity;
     }
+  });
 
-    const response = await createOrder(order);
-    console.log(response);
-}
+  // Convert the aggregated quantities object into an array of OrderItems
+  const orderItems = Object.entries(aggregatedQuantities).map(([foodItemId, quantity]) => ({
+    FoodItemId: parseInt(foodItemId),
+    Quantity: quantity
+  }));
+
+  // Create the order object
+  const order = {
+    CustomerName: 'customerName',
+    TotalAmount: total.value,
+    Status: 'In Progress',
+    OrderItems: orderItems
+  };
 
 
+  // Call the createOrder API with the createOrderDto
+  const response = await createOrder(order);
+  console.log(response);
+};
 </script>
 
 <style>

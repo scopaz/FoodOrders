@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginPage from '../views/LoginPage.vue'
 import HomePage from '../views/HomeView.vue'
 import AboutPage from '../views/AboutView.vue'
+import AdminView from '../views/AdminView.vue'
 import {checkAuth} from "../api/foodOrders.api"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,12 @@ const router = createRouter({
       name: 'about',
       component: AboutPage,
       meta: { requiresAuth: true } // Add this meta property to indicate the route requires authentication
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminView,
+      meta: { requiresAuth: true, requiresAdmin: true } // Add this meta property to indicate the route requires authentication and admin role
     }
   ]
 });
@@ -41,11 +48,19 @@ router.beforeEach(async (to, from, next) => {
       // Send a request to check if the user is authenticated
       const response = await checkAuth();
       const authenticated = response.data.authenticated;
-
-      if (authenticated) {
-        // User is authenticated, allow access to the route
-        next();
-      } else {
+      const isAdmin = response.data.isAdmin;
+      console.log(response);
+      if(authenticated){
+        if(to.meta.requiresAdmin && isAdmin){
+          next();
+        }
+        else if(to.meta.requiresAdmin && !isAdmin){
+          next('/home');
+        }else {
+          next();
+        }
+      }
+      else {
         // User is not authenticated, redirect to login page
         next('/login');
       }

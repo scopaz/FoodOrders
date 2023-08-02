@@ -39,7 +39,7 @@ export default {
         token.value = response.token;
 
         // Navigate to '/home' route using the router
-        router.push('/home');
+        router.push('/admin');
 
         // Reset the form after successful submission
         email.value = '';
