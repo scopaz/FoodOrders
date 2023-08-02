@@ -1,4 +1,6 @@
 <template>
+  <user-profil />
+
   <div>
     <div v-if="foodtypes">
       <!-- Render the list of food types -->
@@ -52,7 +54,7 @@ const selectFoodType = (foodtype) => {
 };
 
 const store = useStore();
-const selectedFoodItems = computed(() => store.state.selectedFoodItems);
+const selectedFoodItems = computed(() => store.getters['fooditem/getSelectedFoodItems'])
 
 const total = computed(() => {
   let totalPrice = selectedFoodItems.value.reduce((acc, item) => {

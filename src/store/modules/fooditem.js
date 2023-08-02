@@ -7,7 +7,9 @@ const state = {
     },
   };
   const actions = {};
-  const getters = {};
+  const getters = {
+    getSelectedFoodItems: (state) => state.selectedFoodItems
+  };
 
   export default {
     namespaced: true,
