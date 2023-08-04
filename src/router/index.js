@@ -49,7 +49,6 @@ router.beforeEach(async (to, from, next) => {
       const response = await checkAuth();
       const authenticated = response.data.authenticated;
       const isAdmin = response.data.isAdmin;
-      console.log(response);
       if(authenticated){
         if(to.meta.requiresAdmin && isAdmin){
           next();
