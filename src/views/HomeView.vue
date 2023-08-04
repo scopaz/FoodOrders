@@ -32,10 +32,12 @@ import { ref, onMounted } from 'vue';
 import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
 import { getTimeForMorocco } from '../helper/timeUtils';
-
+import { setupSignalR } from '@/services/signalRService'; // Update the path
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 const foodtypes = ref(null);
 const selectedFoodType = ref(null);
-
+const connection = setupSignalR();
+const adminNotification = ref('');
 const fetchFoodItems = async () => {
   try {
     const response = await getFoodItems();
@@ -98,10 +100,26 @@ const commander = async () => {
     OrderItems: orderItems
   };
 
+  try {
+    // Wait for the SignalR connection to start before sending the notification
+    if (connection.state === 'Connected') {
 
-  // Call the createOrder API with the createOrderDto
-  const response = await createOrder(order);
-  console.log(response);
+    // Call the createOrder API with the createOrderDto
+    const response = await createOrder(order);
+    console.log(response.data);
+    // Notify admin via SignalR
+    const message = `New order created for ${response.data.customerName}`;
+    await connection.invoke('SendOrderNotificationToAdmin', message);
+    adminNotification.value = 'Order notification sent to admin';
+  }
+  else{
+    console.warn('SignalR connection is not yet established.');
+  }
+  } catch (error) {
+    console.error('Error sending order notification:', error);
+    adminNotification.value = 'Error sending order notification';
+  }
+
 };
 </script>
 
