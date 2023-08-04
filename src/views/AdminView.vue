@@ -17,7 +17,10 @@
       <button> Complete </button>
       <p></p>
 
-      {{ orderCreatedTestAdmin }}
+      <div v-for="(order, index) in orderNotifications" :key="index">
+      <!-- Display each order notification -->
+      {{ order }}
+    </div>
       
     </div>
   </template>
@@ -26,7 +29,7 @@
 import { computed,onMounted  } from 'vue';
 import { useStore } from 'vuex';
 
-const orderCreatedTestAdmin = computed(() => store.getters['notifications/getOrderCreatedTestAdmin']);
+const orderNotifications = computed(() => store.getters['notifications/getOrderNotifications']);
     const store = useStore();
     const messageConnection = "";
   

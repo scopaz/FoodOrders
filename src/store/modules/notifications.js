@@ -1,25 +1,24 @@
 // store/modules/notification.js
 const state = {
-    orderCreatedTestAdmin: 'test'
-  };
-  
-  const mutations = {
-    setOrderCreatedTestAdmin(state, message) {
-      state.orderCreatedTestAdmin = message;
-    }
-  };
-  
-  const actions = {};
-  
-  const getters = {
-    getOrderCreatedTestAdmin: (state) => state.orderCreatedTestAdmin
-  };
-  
-  export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
-  };
-  
+  orderNotifications: []
+};
+
+const mutations = {
+  addOrderNotification(state, message) {
+    state.orderNotifications.push(message);
+  }
+};
+
+const actions = {};
+
+const getters = {
+  getOrderNotifications: (state) => state.orderNotifications
+};
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters
+};

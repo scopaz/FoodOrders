@@ -47,8 +47,11 @@
   const connection = createSignalRConnection();
   const store = useStore();
   const isAdmin = ref(false);
-  let orderCreatedTestAdmin = ref('test');
-  
+  let orderNotifications = ref('test');
+  const userInfo = store.getters['user/getUserInfo'];
+
+  console.log(userInfo);
+
   const fetchFoodItems = async () => {
     try {
       const response = await getFoodItems();
@@ -82,8 +85,8 @@
   
   connection.on('ReceiveOrderNotification', (message) => {
             // Handle the received order notification
-            orderCreatedTestAdmin.value = message;
-            store.commit('notifications/setOrderCreatedTestAdmin', message); // Update the shared state
+            orderNotifications.value = message;
+            store.commit('notifications/addOrderNotification', message); // Update the shared state
             console.log('Received order notification:', message);
       });
   // store.commit('connectionSignalR/setSignalRConnection', connection);
@@ -138,7 +141,7 @@
   
     // Create the order object
     const order = {
-      CustomerName: 'customerName',
+      CustomerName: userInfo.firstname + ' ' + userInfo.lastname,
       TotalAmount: total.value,
       Status: 'In Progress',
       OrderItems: orderItems
