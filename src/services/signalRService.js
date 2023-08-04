@@ -1,18 +1,13 @@
 // src/services/signalRService.js
 import { HttpTransportType, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
-export function setupSignalR() {
+export function createSignalRConnection() {
     
     const connection = new HubConnectionBuilder()
         .withUrl('http://localhost:5020/orderhub')
         .configureLogging(LogLevel.Trace) // Enable detailed logging
         .build();
 
-    connection.on('ReceiveOrderNotification', (message) => {
-        // Handle the received order notification
-        console.log('Received order notification:', message);
-    });
-    connection.start();
     // connection.start()
     //     .then(() => {
     //         console.log('Connected to SignalR hub');

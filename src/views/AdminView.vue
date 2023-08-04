@@ -12,28 +12,24 @@
       Sandwish nugget * 2
       Frite * 1
       Totale : 30 DH
-      In Progress
+      In Pr   ogress
 
       <button> Complete </button>
+      <p></p>
 
-
+      {{ orderCreatedTestAdmin }}
       
     </div>
   </template>
 
-<script>
-import { computed } from 'vue';
+<script setup>
+import { computed,onMounted  } from 'vue';
 import { useStore } from 'vuex';
 
-export default {
-  setup() {
+const orderCreatedTestAdmin = computed(() => store.getters['notifications/getOrderCreatedTestAdmin']);
     const store = useStore();
+    const messageConnection = "";
+  
+
     
-
-
-    return {
-
-    };
-  },
-};
 </script>
