@@ -30,7 +30,7 @@ const store = useStore();
 const handleClick = (operator) => {
   if(operator == Operations.Minus && quantity.value > 0) quantity.value--;
   if(operator == Operations.Plus) quantity.value++;
-      // Dispatch an action to add the selected food item and quantity to the store
+      // Dispatch an cteaction to add the seled food item and quantity to the store
       store.commit('fooditem/addToSelectedFoodItems', { fooditem, quantity: operator });
 };
 </script>
