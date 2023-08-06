@@ -19,11 +19,28 @@ export async function getTimeForMorocco() {
 
       return localDateTime; // Return the local datetime for Morocco
     } else {
-      console.error('Error fetching time from the internet.');
+      console.error('Error fetching time from the   internet.');
       return null;
     }
   } catch (error) {
     console.error('Error fetching time from the internet:', error);
     return null;
   }
+}
+
+
+export function convertISOToCustomFormat(isoDate) {
+  const date = new Date(isoDate);
+
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+
+  const formatter = new Intl.DateTimeFormat('en-GB', options);
+  return formatter.format(date);
 }

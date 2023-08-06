@@ -131,11 +131,10 @@
       FoodItemId: parseInt(foodItemId),
       Quantity: quantity
     }));
-  
     // Create the order object
     const order = {
-      "CustomerName": "Michael Brown",
-      "TotalAmount": 6.99,
+      "CustomerName": userData.firstname + ' ' + userData.lastname,
+      "TotalAmount": parseInt(total.value),
       "Status": "In Progress",
       "OrderItems": orderItems,
     };
@@ -145,10 +144,10 @@
   
     // Call the createOrder API with the createOrderDto
     const response = await createOrder(order);
-    console.log('Sending order:', order);
+    console.log('Sending order:', response.data);
     // Notify admin via SignalR
 
-    await connection.invoke('ReceiveOrderNotification', order);
+    await connection.invoke('ReceiveOrderNotification', order, selectedFoodItems.value);
 
     
   }

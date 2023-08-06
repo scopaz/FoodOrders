@@ -6,6 +6,7 @@ export function createSignalRConnection() {
     const connection = new HubConnectionBuilder()
         .withUrl('http://localhost:5020/orderhub')
         .configureLogging(LogLevel.Trace) // Enable detailed logging
+        .withAutomaticReconnect() 
         .build();
 
     
