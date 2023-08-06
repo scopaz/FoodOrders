@@ -4,8 +4,8 @@ const state = {
 };
 
 const mutations = {
-  addOrderNotification(state, message) {
-    state.orderNotifications.push(message);
+  setOrderNotifications(state, notifications) {
+    state.orderNotifications = notifications;
   }
 };
 

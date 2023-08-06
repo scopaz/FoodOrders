@@ -1,10 +1,6 @@
 <template>
   <user-profil />
-  
-  <div v-if="isAdmin">
-   <AdminView />
-  </div>
-  <div v-else>
+ 
     <div>
       <div v-if="foodtypes">
         <!-- Render the list of food types -->
@@ -26,7 +22,6 @@
     <div>Total : {{ total }}</div>
   
     <button @click="commander">Commander</button>
-  </div>
   </template>
   
   
@@ -49,7 +44,8 @@
   const isAdmin = ref(false);
   let orderNotifications = ref('test');
   const userInfo = store.getters['user/getUserInfo'];
-
+  const orders = ref([]);
+  const userData = JSON.parse(localStorage.getItem('userData'));
   console.log(userInfo);
 
   const fetchFoodItems = async () => {
@@ -83,14 +79,11 @@
     
   });
   
-  connection.on('ReceiveOrderNotification', (message) => {
-            // Handle the received order notification
-            orderNotifications.value = message;
-            store.commit('notifications/addOrderNotification', message); // Update the shared state
-            console.log('Received order notification:', message);
-      });
-  // store.commit('connectionSignalR/setSignalRConnection', connection);
   
+  connection.on('ReceiveOrder', (order) => {
+    console.log(order);
+  store.commit('notifications/setOrderNotifications', [...store.state.notifications.orderNotifications, order]);
+});
       
   
   
@@ -141,24 +134,22 @@
   
     // Create the order object
     const order = {
-      CustomerName: userInfo.firstname + ' ' + userInfo.lastname,
-      TotalAmount: total.value,
-      Status: 'In Progress',
-      OrderItems: orderItems
+      "CustomerName": "Michael Brown",
+      "TotalAmount": 6.99,
+      "Status": "In Progress",
+      "OrderItems": orderItems,
     };
-  
     try {
     // Wait for the SignalR connection to start before sending the notification
     if (connection.state === 'Connected') {
   
     // Call the createOrder API with the createOrderDto
     const response = await createOrder(order);
-    console.log(response.data);
+    console.log('Sending order:', order);
     // Notify admin via SignalR
-    const message = `New order created for ${response.data.customerName}`;
-    await connection.invoke('SendOrderNotificationToAdmin', message);
-    adminNotification.value = 'Order notification sent to admin';
-  
+
+    await connection.invoke('ReceiveOrderNotification', order);
+
     
   }
   else{
@@ -169,7 +160,7 @@
     adminNotification.value = 'Error sending order notification';
   }
   
-  
+
   };
   </script>
   

@@ -8,6 +8,7 @@ export function createSignalRConnection() {
         .configureLogging(LogLevel.Trace) // Enable detailed logging
         .build();
 
+    
     // connection.start()
     //     .then(() => {
     //         console.log('Connected to SignalR hub');
