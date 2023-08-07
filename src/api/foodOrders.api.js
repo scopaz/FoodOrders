@@ -70,3 +70,13 @@ export const createOrder = async (order) => {
 }
 
 
+export const getFullOrders = async () => {
+  try {
+      const response = await apiClient.get('/order/full-orders');
+      return response;
+  } catch (error) {
+      console.error('Error fetching foodItems:', error);
+      throw error;
+  }
+}
+
