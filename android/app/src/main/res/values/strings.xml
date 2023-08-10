@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">foodordersfront</string>
+    <string name="title_activity_main">foodordersfront</string>
+    <string name="package_name">com.foodordersfront</string>
+    <string name="custom_url_scheme">com.foodordersfront</string>
+</resources>
