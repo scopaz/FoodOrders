@@ -5,9 +5,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ionic:build": "npm run build",
+    "ionic:serve": "vite dev --host"
   },
   "dependencies": {
+    "@capacitor/android": "5.2.2",
+    "@capacitor/app": "5.0.6",
+    "@capacitor/cli": "5.2.2",
+    "@capacitor/core": "5.2.2",
+    "@capacitor/haptics": "5.0.6",
+    "@capacitor/keyboard": "5.0.6",
+    "@capacitor/status-bar": "5.0.6",
+    "@ionic/vue": "^7.2.2",
+    "@ionic/vue-router": "^7.2.2",
     "@microsoft/signalr": "^7.0.9",
     "@vue/reactivity": "^3.3.4",
     "axios": "^1.4.0",

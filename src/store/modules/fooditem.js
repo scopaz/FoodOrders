@@ -5,6 +5,9 @@ const state = {
     addToSelectedFoodItems(state, payload) {
       state.selectedFoodItems.push(payload);
     },
+    removeFromSelectedFoodItems(state, payload) {
+      state.selectedFoodItems.pop();
+    },
   };
   const actions = {};
   const getters = {

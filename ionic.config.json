@@ -1,0 +1,7 @@
+{
+  "name": "foodordersfront",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

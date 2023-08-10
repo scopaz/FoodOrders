@@ -3,7 +3,7 @@
     {{ foodtype.name }}
     <div v-if="foodtype.foodItems">
       <!-- Render the food items for the selected food type -->
-      <FoodItem v-for="fooditem in foodtype.foodItems" :key="fooditem.foodItemID" :fooditem="fooditem" @select="selectFoodItem" />
+      <FoodItem v-for="fooditem in foodtype.foodItems" :key="fooditem.foodItemID" :fooditem="fooditem" @select="selectFoodItem" :selected-food-items="selectedFoodItems" />
     </div>
   </div>
 </template>
@@ -12,11 +12,7 @@
 import { ref, onMounted } from 'vue';
 import FoodItem from '../components/FoodItem.vue'; // Import the FoodItem component
 
-// Declare the props using the `defineProps` function
-const { foodtype } = defineProps(['foodtype']);
-
-// Use ref() to create a reactive reference for selectedFoodItems
-const selectedFoodItems = ref([]);
+const { foodtype, selectedFoodItems } = defineProps(['foodtype', 'selectedFoodItems']);
 
 const selectFoodItem = (fooditem) => {
   selectedFoodItems.value.push(fooditem); // Use selectedFoodItems.value to access the array

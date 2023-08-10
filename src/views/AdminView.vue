@@ -1,21 +1,8 @@
 <template>
+
+
     <div>
-      <!-- CustomerName1
-      Tacos Mix * 2
-      Tacos Dinde * 3
-      Totale : 40 DH
-      In Progress
 
-      <button> Complete </button>
-      -------------------------------
-      CustomerName2
-      Sandwish nugget * 2
-      Frite * 1
-      Totale : 30 DH
-      In Pr   ogress
-
-      <button> Complete </button>
-      <p></p> -->
       <h2>Orders</h2>
 
       <div v-if="hasNotifications">
@@ -56,6 +43,8 @@
       </div>
     </div>
     </div>
+    
+
 
   </template>
 

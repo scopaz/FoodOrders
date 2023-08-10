@@ -1,31 +1,45 @@
 <template>
-  <user-profil />
- 
-    <div>
-      <div v-if="foodtypes">
+  <div class="home-view">
+    <user-profil />
+    <ion-card v-if="isNative">
+    <ion-card-header>
+      <ion-card-title>Menu</ion-card-title>
+      <ion-card-subtitle>Select Menu Item</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item v-if="foodtypes" v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype) ">
+          <ion-thumbnail slot="start">
+            <img alt="" v-bind:src="foodtype.imageUrl" />
+          </ion-thumbnail>
+          <ion-label>{{ foodtype.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+    <div v-if="!isNative" class="food-type-container">
+      <div class="food-type-list">
         <!-- Render the list of food types -->
-        <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype) " >
+        <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" class="food-type-button">
           {{ foodtype.name }}
+          <img :src="foodtype.imageUrl" alt="Food Type" class="food-type-image" />
         </button>
       </div>
-      <div v-else>
-        Loading...
-      </div>
-  
-      <!-- Render the selected food type and its food item -->
-      <div v-if="selectedFoodType">
-        <food-type :foodtype="selectedFoodType" /> 
+      <div class="selected-food-type">
+        <!-- Render the selected food type and its food item -->
+        <div v-if="selectedFoodType">
+          <food-type :foodtype="selectedFoodType" :selected-food-items="selectedFoodItems" />
+        </div>
+        <div class="total">Total : {{ total }} DH</div>
+        <button :disabled="total == 0" @click="commander" class="command-button">Commander</button>
       </div>
     </div>
-  
-  
-    <div>Total : {{ total }}</div>
-  
-    <button @click="commander">Commander</button>
-  </template>
-  
+  </div>
+</template>
   
   <script setup>
+  import { Capacitor } from '@capacitor/core';
+  import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
   import UserProfil from '../components/UserProfil.vue';
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
@@ -46,13 +60,15 @@
   const userInfo = store.getters['user/getUserInfo'];
   const orders = ref([]);
   const userData = JSON.parse(localStorage.getItem('userData'));
-  console.log(userInfo);
+
+  const isNative = Capacitor.isNativePlatform();
+
 
   const fetchFoodItems = async () => {
     try {
       const response = await getFoodItems();
       foodtypes.value = response.data;
-      
+      console.log(response)
     } catch (error) {
       console.error('Error fetching food items:', error);
     }
@@ -85,7 +101,6 @@
   store.commit('notifications/setOrderNotifications', [...store.state.notifications.orderNotifications, order]);
 });
       
-  
   
     
   const selectFoodType = (foodtype) => {
@@ -164,6 +179,74 @@
   </script>
   
   <style>
-  /* Add your custom styles here */
+    ion-item {
+        --padding-start: 0;
+      }
+
+/* Component-specific styles */
+.home-view {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.food-type-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.food-type-list {
+  margin-top: 20px;
+}
+
+.food-type-button {
+  display: block;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #3490dc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.food-type-button:hover {
+  background-color: #2779bd;
+}
+
+.food-type-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.selected-food-type {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+
+.total {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.command-button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.command-button:hover {
+  background-color: #27ae60;
+}
   </style>
   
