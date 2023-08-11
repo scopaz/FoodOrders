@@ -1,7 +1,8 @@
 <template>
+  <ion-content ref="content" class="ion-padding">
   <div class="home-view">
     <user-profil />
-    <ion-card v-if="isNative">
+    <ion-card v-if="!isNative">
     <ion-card-header>
       <ion-card-title>Menu</ion-card-title>
       <ion-card-subtitle>Select Menu Item</ion-card-subtitle>
@@ -17,7 +18,7 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-    <div v-if="!isNative" class="food-type-container">
+    <div v-if="isNative" class="food-type-container">
       <div class="food-type-list">
         <!-- Render the list of food types -->
         <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" class="food-type-button">
@@ -35,6 +36,7 @@
       </div>
     </div>
   </div>
+</ion-content>
 </template>
   
   <script setup>

@@ -1,7 +1,7 @@
 <template>
 
 
-    <div>
+<ion-content ref="content" class="ion-padding">
 
       <h2>Orders</h2>
 
@@ -42,8 +42,7 @@
         </ul>
       </div>
     </div>
-    </div>
-    
+  </ion-content>
 
 
   </template>
