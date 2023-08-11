@@ -1,53 +1,54 @@
 <template>
 
-
+<ion-page>
 <ion-content ref="content" class="ion-padding">
 
       <h2>Orders</h2>
 
-      <div v-if="hasNotifications">
-        <div v-for="order in sortedNotifications" :key="order.id">
-          <h3>Order ID: {{ order.orderID }}</h3>
-          <p>Customer Name: {{ order.customerName }}</p>
-          <p>Order Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
-          <p>Total Amount: {{ order.totalAmount }}</p>
+      <ion-item v-if="hasNotifications">
+        <ion-list v-for="order in sortedNotifications" :key="order.id">
+          <ion-item>
+          <!-- <h3>Order ID: {{ order.orderID }}</h3> -->
+          <p>Client : {{ order.customerName }}</p>
+          <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
+          <p>Montant: {{ order.totalAmount }} DH</p>
           <p>Status: {{ order.status }}</p>
-          <h4>Order Items:</h4>
          <ul>
           <li v-for="orderItem in order.orderItems" :key="orderItem.orderItemID">
-            <p>OrderItem: {{ orderItem.orderItemID }}</p>
-            <p>Quantity: {{ orderItem.quantity }}</p>
-            <p>Food Item Name: {{ getNameByFoodItemID(orderItem.foodItemID) }}</p>
+            <!-- <p>OrderItem: {{ orderItem.orderItemID }}</p> -->
+            <p>{{ orderItem.quantity }} x {{ getNameByFoodItemID(orderItem.foodItemID) }}</p>
           </li>
          </ul>
-        </div>
-      </div>
+        </ion-item>
+        </ion-list>
+      </ion-item>
       <div v-else>
         No notifications available.
       </div>
     <div>
-      <div v-for="order in ordersInProgress.data" :key="order.orderID">
-        <h3>Order ID: {{ order.orderID }}</h3>
-        <p>Customer Name: {{ order.customerName }}</p>
-        <p>Order Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
-        <p>Total Amount: {{ order.totalAmount }}</p>
-        <p>Status: {{ order.status }}</p>
-        <h4>Order Items:</h4>
+      <ion-item v-for="order in ordersInProgress.data" :key="order.orderID">
+        <ion-label>
+        <!-- <h3>Order ID: {{ order.orderID }}</h3> -->
+        <p>Client: {{ order.customerName }}</p>
+        <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
+        <p>Montant: {{ order.totalAmount }} DH</p>
+        <p style="color:blue">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
         <ul>
           <li v-for="orderItem in order.orderItems" :key="orderItem.orderItemID">
-            <p>OrderItem: {{ orderItem.orderItemID }}</p>
-            <p>Quantity: {{ orderItem.quantity }}</p>
-            <p>Food Item Name: {{ orderItem.foodItem.name }}</p>
+            <!-- <p>OrderItem: {{ orderItem.orderItemID }}</p> -->
+            <p>{{ orderItem.quantity }} x {{ orderItem.foodItem.name }}</p>
           </li>
         </ul>
-      </div>
+      </ion-label>
+      </ion-item>
     </div>
   </ion-content>
-
+</ion-page>
 
   </template>
 
 <script setup>
+import { IonPage, IonItem, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent } from '@ionic/vue';
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import {createSignalRConnection} from '../services/signalRService'

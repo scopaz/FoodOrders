@@ -4,12 +4,16 @@ import HomePage from '../views/HomeView.vue'
 import AboutPage from '../views/AboutView.vue'
 import AdminView from '../views/AdminView.vue'
 import {checkAuth} from "../api/foodOrders.api"
-
+import Tab from '../components/Tab.vue';
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      redirect: '/home',
+    },
     {
       path: '/login',
       name: 'login',
@@ -17,29 +21,25 @@ const router = createRouter({
     },
     {
       path: '/',
-      name: 'login',
-      component: LoginPage,
+      component: Tab,
+      children: [
+        {
+          path: '/home',
+          name: 'home',
+          component: HomePage,
+          meta: { requiresAuth: true } // Add this meta property to indicate the route requires authentication
+        },
+        {
+          path: '/admin',
+          name: 'admin',
+          component: AdminView,
+          meta: { requiresAuth: true, requiresAdmin: true } // Add this meta property to indicate the route requires authentication and admin role
+        }
+      ]
     },
-    {
-      path: '/home',
-      name: 'home',
-      component: HomePage,
-      meta: { requiresAuth: true } // Add this meta property to indicate the route requires authentication
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: AboutPage,
-      meta: { requiresAuth: true } // Add this meta property to indicate the route requires authentication
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: AdminView,
-      meta: { requiresAuth: true, requiresAdmin: true } // Add this meta property to indicate the route requires authentication and admin role
-    }
   ]
 });
+
 
 
 // Register the navigation guard
