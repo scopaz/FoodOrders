@@ -3,7 +3,7 @@
   <ion-content ref="content" class="ion-padding">
   <div class="home-view">
     <user-profil />
-    <ion-card v-if="!isNative">
+    <!-- <ion-card v-if="!isNative">
     <ion-card-header>
       <ion-card-title>Menu</ion-card-title>
       <ion-card-subtitle>Select Menu Item</ion-card-subtitle>
@@ -18,7 +18,7 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
     <div>
       <div >
         <!-- Render the list of food types -->
