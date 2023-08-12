@@ -5,23 +5,23 @@
 
       <h2>Orders</h2>
 
-      <ion-item v-if="hasNotifications">
-        <ion-list v-for="order in sortedNotifications" :key="order.id">
-          <ion-item>
+      <div v-if="hasNotifications">
+        <ion-item v-for="order in sortedNotifications" :key="order.id">
+          <ion-label>
           <!-- <h3>Order ID: {{ order.orderID }}</h3> -->
           <p>Client : {{ order.customerName }}</p>
           <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
           <p>Montant: {{ order.totalAmount }} DH</p>
-          <p>Status: {{ order.status }}</p>
+          <p style="color:blue">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
          <ul>
           <li v-for="orderItem in order.orderItems" :key="orderItem.orderItemID">
             <!-- <p>OrderItem: {{ orderItem.orderItemID }}</p> -->
             <p>{{ orderItem.quantity }} x {{ getNameByFoodItemID(orderItem.foodItemID) }}</p>
           </li>
          </ul>
+        </ion-label>
         </ion-item>
-        </ion-list>
-      </ion-item>
+      </div>
       <div v-else>
         No notifications available.
       </div>
