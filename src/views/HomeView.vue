@@ -24,14 +24,8 @@
         <!-- Render the list of food types -->
         <swiper  
           :modules="modules" 
-          :autoplay="true" 
           :keyboard="true" 
-          :pagination="true" 
-          :scrollbar="true" 
-          :zoom="true" 
           :slides-per-view="3" 
-          :freeMode="true"
-          :loop="true"
           :spaceBetween="30">
           <swiper-slide v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" >
             <div  class="food-type-text">{{ foodtype.name }}</div>
@@ -55,7 +49,7 @@
   
   <script setup>
   import { Capacitor } from '@capacitor/core';
-  import { IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
+  import { IonicSlides, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
   import UserProfil from '../components/UserProfil.vue';
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
@@ -81,7 +75,8 @@
 
   import '@ionic/vue/css/ionic-swiper.css';
 
-  
+  const modules = [Autoplay, Keyboard, Pagination, Scrollbar, Zoom, FreeMode, IonicSlides];
+
   const foodtypes = ref(null);
   const selectedFoodType = ref(null);
   const adminNotification = ref('');
