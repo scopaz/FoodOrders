@@ -4,7 +4,7 @@ import { HttpTransportType, HubConnectionBuilder, LogLevel } from '@microsoft/si
 export function createSignalRConnection() {
     
     const connection = new HubConnectionBuilder()
-        .withUrl('http://192.168.100.24:5020/orderhub')
+        .withUrl('https://foodorders.azurewebsites.net/orderhub')
         .configureLogging(LogLevel.Trace) // Enable detailed logging
         .withAutomaticReconnect() 
         .build();
