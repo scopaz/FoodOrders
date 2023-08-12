@@ -30,7 +30,7 @@
   <script >
     import { IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/vue';
     import { playCircle, radio, library, search, home, person, accessibility, archiveSharp } from 'ionicons/icons';
-  
+    
     export default {
       components: { IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel, IonIcon },
       data() {

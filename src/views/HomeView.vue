@@ -3,7 +3,7 @@
   <ion-content ref="content" class="ion-padding">
   <div class="home-view">
     <user-profil />
-    <ion-card v-if="isNative">
+    <ion-card v-if="!isNative">
     <ion-card-header>
       <ion-card-title>Menu</ion-card-title>
       <ion-card-subtitle>Select Menu Item</ion-card-subtitle>
@@ -19,13 +19,25 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-    <div v-if="isNative" class="food-type-container">
-      <div class="food-type-list">
+    <div>
+      <div >
         <!-- Render the list of food types -->
-        <button v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" class="food-type-button">
-          {{ foodtype.name }}
-          <img :src="foodtype.imageUrl" alt="Food Type" class="food-type-image" />
-        </button>
+        <swiper  
+          :modules="modules" 
+          :autoplay="true" 
+          :keyboard="true" 
+          :pagination="true" 
+          :scrollbar="true" 
+          :zoom="true" 
+          :slides-per-view="3" 
+          :freeMode="true"
+          :loop="true"
+          :spaceBetween="30">
+          <swiper-slide v-for="foodtype in foodtypes" :key="foodtype.foodTypeID" @click="selectFoodType(foodtype)" >
+            <div  class="food-type-text">{{ foodtype.name }}</div>
+            <img :src="foodtype.imageUrl" alt="Food Type" class="food-type-image" />
+          </swiper-slide>
+        </swiper>
       </div>
       <div class="selected-food-type">
         <!-- Render the selected food type and its food item -->
@@ -33,7 +45,7 @@
           <food-type :foodtype="selectedFoodType" :selected-food-items="selectedFoodItems" />
         </div>
         <div class="total">Total : {{ total }} DH</div>
-        <button :disabled="total == 0" @click="commander" class="command-button">Commander</button>
+        <ion-button size="large" expand="full" :disabled="total == 0" @click="commander" >Commander</ion-button>
       </div>
     </div>
   </div>
@@ -43,7 +55,7 @@
   
   <script setup>
   import { Capacitor } from '@capacitor/core';
-  import { IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
+  import { IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
   import UserProfil from '../components/UserProfil.vue';
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
@@ -54,6 +66,22 @@
   import { getTimeForMorocco } from '../helper/timeUtils';
   import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
   import {createSignalRConnection} from '../services/signalRService'
+  import { defineComponent } from 'vue';
+  import { Autoplay, Keyboard, Pagination, Scrollbar, Zoom, FreeMode} from 'swiper/modules';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+  // import { IonicSlides } from '@ionic/vue';
+
+  import 'swiper/css';
+  import 'swiper/css/autoplay';
+  import 'swiper/css/keyboard';
+  import 'swiper/css/pagination';
+  import 'swiper/css/scrollbar';
+  import 'swiper/css/zoom';
+  import 'swiper/css/free-mode';
+
+  import '@ionic/vue/css/ionic-swiper.css';
+
+  
   const foodtypes = ref(null);
   const selectedFoodType = ref(null);
   const adminNotification = ref('');
@@ -220,10 +248,18 @@
 }
 
 .food-type-image {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-  vertical-align: middle;
+  position: relative;
+  display: inline-block;
+}
+
+.food-type-text {
+  position: absolute;
+  bottom: -40px; /* Adjust this value to move the text down */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .selected-food-type {
@@ -251,6 +287,29 @@
 
 .command-button:hover {
   background-color: #27ae60;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper {
+  position: relative;
+  padding: 10px 10px 30px 10px;
+  margin: 0px -30px 10px -30px; /* Adjust these negative margins */
+  z-index: 1; /* Ensure the overlapping item appears above others */
 }
   </style>
   
