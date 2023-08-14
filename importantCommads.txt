@@ -1,0 +1,7 @@
+ionic capacitor run android --livereload --external
+dotnet publish -c Release -o ./bin/Publish
+npx ionic build && npx cap copy android && npx cap run android --target=Pixel_7_API_28  --external --no-build --no-sync --public-host=http://localhost
+
+npx cap run android --target=Pixel_7_API_28  --external --public-host=http://localhost
+
+"FoodOrderDbContext": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=FoodOrdersDev;Integrated Security=True;TrustServerCertificate=True;"

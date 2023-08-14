@@ -1,6 +1,6 @@
 import axios from 'axios';
 const API_BASE_URL = 'https://foodorders.azurewebsites.net/api';
-
+// const API_BASE_URL = 'http://localhost:5020/api';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -80,3 +80,13 @@ export const getFullOrders = async () => {
   }
 }
 
+
+export const register = async (registerData) => {
+  try {
+    const response =  await apiClient.post('/account/register', registerData);
+    return response.data; // Return the response data (token and expiration)
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+};

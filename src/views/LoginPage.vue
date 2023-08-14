@@ -1,166 +1,128 @@
 <template>
-  <div class="login-page">
-    <div class="background-image"></div>
-    <div class="login-form">
-      <img src="@/assets/images/logo.jpg" alt="Food Order App Logo" class="app-logo">
-      <h2 class="login-title">Food Order App</h2>
-      <form @submit.prevent="submitForm">
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="text" id="email" v-model="email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="password" required>
-        </div>
-        <button type="submit" class="login-button">Login</button>
-      </form>
-    </div>
-  </div>
+  <ion-page class="login-page">
+    <ion-content class="ion-padding">
+      <div class="background-image"></div>
+      <div class="login-form ion-padding">
+        <!-- <img src="@/assets/images/logo2.jpg" alt="Food Order App Logo" class="app-logo"> -->
+        <div class="app-logo">Logo</div>
+        <form @submit.prevent="submitForm">
+          
+          <ion-item>
+            <ion-input label="Email:" labelPlacement="stacked" type="text" v-model="email" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Password:" labelPlacement="stacked" type="password" v-model="password" required></ion-input>
+          </ion-item>
+          <ion-button color="tertiary" expand="full" class="ion-margin-top" type="submit">Login</ion-button>
+        </form>
+        <p v-if="errorMessage" class="error-message ion-text-center">{{ errorMessage }}</p>
+        <ion-label router-link="/register" class="ion-margin-top ion-text-center">Register</ion-label>
+
+      </div>
+
+     
+    </ion-content>
+  </ion-page>
 </template>
 
-<script>
+<script setup>
+import { IonTitle, IonInput, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
+
 import { ref } from 'vue';
-import {getCustomers, login} from "../api/foodOrders.api"
-import { useRouter } from 'vue-router'; // Import the useRouter function from vue-router
-import { mapMutations } from 'vuex';
-import jwt_decode from 'jwt-decode';
+import { login } from "../api/foodOrders.api";
 import { useStore } from 'vuex';
-export default {
-  setup() {
-    const email = ref('');
-    const password = ref('');
-    const token = ref(null);
-    const router = useRouter(); // Get the router instance
-    const store = useStore();
+import { useRouter } from 'vue-router';
+import jwt_decode from 'jwt-decode';
 
-    const submitForm = async () => {
-      try {
-        // Call the login API to authenticate the user and get the token
-        const response = await login(email.value, password.value);
+const email = ref('');
+const password = ref('');
+const token = ref(null);
+const errorMessage = ref('');
+const store = useStore();
+const router = useRouter();
 
-        // Set the token with the obtained value
-        token.value = response.token;
+const submitForm = async () => {
+  try {
+    if (!email.value || !password.value) {
+      errorMessage.value = 'Email and password are required.';
+      return;
+    }
 
-        // Store the user data in localStorage
+    // Call the login API to authenticate the user and get the token
+    const response = await login(email.value, password.value);
 
-        // Decode the JWT token to access the claims
-        const decodedToken = jwt_decode(token.value);
-        console.log(decodedToken);
+    // Set the token with the obtained value
+    token.value = response.token;
 
-        var userData = {
-          username: decodedToken.username,
-          email: decodedToken.email,
-          firstname: decodedToken.firstname,
-          lastname: decodedToken.lastname,
-        }
+    // Store the user data in localStorage
 
-         // Access the claims from the decoded token and set them in Vuex store
-        store.commit('user/setUserInfo', userData);
-        console.log(userData)
-        localStorage.setItem('userData', JSON.stringify(userData));
+    // Decode the JWT token to access the claims
+    const decodedToken = jwt_decode(token.value);
+    console.log(decodedToken);
 
-
-
-        // Navigate to '/home' or 'admin' route using the router
-        router.push('/admin');
-
-        // Reset the form after successful submission
-        email.value = '';
-        password.value = '';
-      } catch (error) {
-        console.error('Error submitting form:', error);
-      }
+    const userData = {
+      username: response.username,
+      email: response.email,
+      firstname: response.firstname,
+      lastname: response.lastname,
     };
 
-    return {
-      email,
-      password,
-      token,
-      submitForm,
-    };
-  },
+      store.commit('user/setUserInfo', userData);
+      localStorage.setItem('userData', JSON.stringify(userData));
+
+      router.push('/admin');
+      email.value = '';
+      password.value = '';
+  } catch (error) {
+    errorMessage.value = 'Invalid email or password.';
+    console.error('Error submitting form:', error);
+  }
 };
+
+
 </script>
 
-<style>
-.login-page {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.background-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('@/assets/images/background.jpg');
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.5); /* Adjust the brightness of the background image */
-  z-index: -1;
-}
-
+<style scoped>
+/* Define your styles here */
 .login-form {
   max-width: 320px;
-  padding: 40px;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* Align children vertically */
+  justify-content: center; /* Center content vertically */
+  height: 100%; /* Expand to full height of ion-content */
 }
 
 .login-title {
-  text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
-  color: #007bff;
+  color: var(--ion-color-primary);
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  font-size: 16px;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.login-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-button:hover {
-  background-color: #0056b3;
+.error-message {
+  color: var(--ion-color-danger);
+  margin-top: 10px;
 }
 
 .app-logo {
   display: block;
   max-width: 100px;
   margin: 0 auto 20px;
+  position: relative;
+  z-index: 1;
+  background-color: inherit;
 }
+ion-content {
+  --background: linear-gradient(to right, #4b134f, #c94b4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ 
+
+}
+ion-item{
+  --background: transparent;
+}
+
+ion-input {
+  --color: white;
+}
+
 </style>

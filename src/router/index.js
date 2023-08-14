@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import LoginPage from '../views/LoginPage.vue'
 import HomePage from '../views/HomeView.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 import AboutPage from '../views/AboutView.vue'
 import AdminView from '../views/AdminView.vue'
 import {checkAuth} from "../api/foodOrders.api"
@@ -18,6 +19,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterPage
     },
     {
       path: '/',
