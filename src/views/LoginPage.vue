@@ -61,10 +61,10 @@ const submitForm = async () => {
     console.log(decodedToken);
 
     const userData = {
-      username: response.username,
-      email: response.email,
-      firstname: response.firstname,
-      lastname: response.lastname,
+      username: decodedToken.username,
+      email: decodedToken.email,
+      firstname: decodedToken.firstname,
+      lastname: decodedToken.lastname,
     };
 
       store.commit('user/setUserInfo', userData);

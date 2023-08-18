@@ -4,6 +4,7 @@ import HomePage from '../views/HomeView.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import AboutPage from '../views/AboutView.vue'
 import AdminView from '../views/AdminView.vue'
+import OrdersView from '../views/OrdersView.vue'
 import {checkAuth} from "../api/foodOrders.api"
 import Tab from '../components/Tab.vue';
 
@@ -40,6 +41,12 @@ const router = createRouter({
           name: 'admin',
           component: AdminView,
           meta: { requiresAuth: true, requiresAdmin: true } // Add this meta property to indicate the route requires authentication and admin role
+        },
+        {
+          path: '/userorders',
+          name: 'userorders',
+          component: OrdersView,
+          meta: { requiresAuth: true, requiresAdmin: false } // Add this meta property to indicate the route requires authentication and admin role
         }
       ]
     },

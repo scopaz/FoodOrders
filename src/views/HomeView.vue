@@ -75,6 +75,9 @@
 
   import '@ionic/vue/css/ionic-swiper.css';
 
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
+
   const modules = [Autoplay, Keyboard, Pagination, Scrollbar, Zoom, FreeMode, IonicSlides];
 
   const foodtypes = ref(null);
@@ -187,11 +190,13 @@
     // Call the createOrder API with the createOrderDto
     const response = await createOrder(order);
     console.log('Sending order:', response.data);
-    // Notify admin via SignalR
 
+    // Notify admin via SignalR
+    //add orderId (otherwise is set to 0)
+    order.OrderId = response.data.orderID;
+    
     await connection.invoke('ReceiveOrderNotification', order, selectedFoodItems.value);
 
-    
   }
   else{
     console.warn('SignalR connection is not yet established.');
@@ -201,7 +206,7 @@
     adminNotification.value = 'Error sending order notification';
   }
   
-
+  isAdmin.value ? router.push('/admin') : router.push('/userorders');
   };
   </script>
   

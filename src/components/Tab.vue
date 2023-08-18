@@ -8,40 +8,31 @@
             <ion-label>Home</ion-label>
           </ion-tab-button>
   
-          <ion-tab-button tab="admin" href="/admin">
+          <ion-tab-button v-if="isAdmin" tab="admin" href="/admin">
             <ion-icon :icon="person" />
             <ion-label>Admin</ion-label>
           </ion-tab-button>
-  
-          <!-- <ion-tab-button tab="library" href="/library">
-            <ion-icon :icon="library" />
-            <ion-label>Library</ion-label>
+          <ion-tab-button v-if="!isAdmin" tab="userorders" href="/userorders">
+            <ion-icon :icon="bagHandleSharp"></ion-icon>
+            <ion-label>Orders</ion-label>
           </ion-tab-button>
-  
-          <ion-tab-button tab="search" href="/search">
-            <ion-icon :icon="search" />
-            <ion-label>Search</ion-label>
-          </ion-tab-button> -->
         </ion-tab-bar>
       </ion-tabs>
     </ion-page>
   </template>
   
-  <script >
-    import { IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/vue';
-    import { playCircle, radio, library, search, home, person, accessibility, archiveSharp } from 'ionicons/icons';
-    
-    export default {
-      components: { IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel, IonIcon },
-      data() {
-        return {
-          playCircle,
-          radio,
-          library,
-          search,
-          home,
-          person
-        };
-      },
-    };
+  <script setup>
+    import {  IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/vue';
+    import { bagHandleSharp, playCircle, radio, library, search, home, person, accessibility, archiveSharp } from 'ionicons/icons';
+    import {ref, onMounted} from 'vue';
+    import {checkAuth} from '../api/foodOrders.api'
+    let isAdmin = ref();
+    onMounted(async () => {
+      try {
+          const response = await checkAuth();
+          isAdmin.value = response.data.isAdmin;
+        } catch (error) {
+          console.error('Error checking authentication:', error);
+        }
+      });
   </script>
