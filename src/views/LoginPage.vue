@@ -53,7 +53,7 @@ const submitForm = async () => {
 
     // Set the token with the obtained value
     token.value = response.token;
-
+    
     // Store the user data in localStorage
 
     // Decode the JWT token to access the claims
@@ -65,6 +65,8 @@ const submitForm = async () => {
       email: decodedToken.email,
       firstname: decodedToken.firstname,
       lastname: decodedToken.lastname,
+      userId: decodedToken.userId,
+      phone: decodedToken.phone
     };
 
       store.commit('user/setUserInfo', userData);

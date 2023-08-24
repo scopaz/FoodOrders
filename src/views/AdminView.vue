@@ -2,6 +2,9 @@
 
 <ion-page>
 <ion-content ref="content" class="ion-padding">
+  <ion-refresher slot="fixed" :pull-factor="0.5" :pull-min="100" :pull-max="200" @ionRefresh="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
       <h2>Orders</h2>
 
@@ -15,6 +18,7 @@
                   <p>Client : {{ order.customerName }}</p>
                   <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
                   <p>Montant: {{ order.totalAmount }} DH</p>
+                  <p>Téléphone: {{ phone }} </p>
                   <p v-if="order.status == 'In Progress'" style="color:blue">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
                   <p v-else style="color:green">Status: {{ order.status.replace('Completed','Completer') }}</p>
                   <ul>
@@ -46,6 +50,7 @@
         <p>Client: {{ order.customerName }}</p>
         <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
         <p>Montant: {{ order.totalAmount }} DH</p>
+        <p>Téléphone: {{ order.phone }} </p>
         <p v-if="order.status == 'In Progress'" style="color:blue">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
         <p v-else style="color:green">Status: {{ order.status.replace('Completed','Completer') }}</p>
         <ul>
@@ -73,20 +78,21 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 
-
-import {  IonButton, IonCol, IonGrid, IonRow, IonPage, IonItem, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent } from '@ionic/vue';
-import { computed, onMounted, ref } from 'vue';
+import { ellipse } from 'ionicons/icons';
+import { IonRefresher, IonRefresherContent, IonButton, IonCol, IonGrid, IonRow, IonPage, IonItem, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent } from '@ionic/vue';
+import { computed, onMounted, ref, inject } from 'vue';
 import { useStore } from 'vuex';
-import {createSignalRConnection} from '../services/signalRService'
+// import {createSignalRConnection} from '../services/signalRService'
 import {convertISOToCustomFormat} from '../helper/timeUtils'
 import { getFullOrders, updateOrderToCompleted, checkAuth } from '../api/foodOrders.api';
 const store = useStore();
 const orders = computed(() => store.getters['notification/orderNotifications']);
 const selectedFoodItemsNotifications = computed(() => store.state.notifications.selectedFoodItemsNotifications);
-const connection = createSignalRConnection();
+// const connection = createSignalRConnection();
 let ordersInProgress = ref([]);
 const hasNotifications = computed(() => orderNotifications.value.length > 0 );
-
+const connection = inject('signalRConnection'); // Use the injected connection
+let phone = ref();
 
 const orderNotifications = computed(() => store.state.notifications.orderNotifications);
 const sortedNotifications = computed(() => {
@@ -109,21 +115,27 @@ function getNameByFoodItemID(foodItemID) {
     }
 }
 
+const handleRefresh = async (event) => {
+    const response = await getFullOrders();
+    // Extract the array of orders from the $values property
+    const orders = response;
+    console.log(orders)
 
+    // Clean the orders data by removing the special properties
+    ordersInProgress.value = orders
+
+    event.target.complete();
+};
 
 onMounted(async () => {
-  connection.start()
-    .then(() => {
       if (connection.state === 'Connected') {
         connection.invoke('JoinAdminGroup');
         console.log('Joined admin group');
   }
-    })
-    .catch((error) => {
-        console.error('Error connecting to SignalR hub:', error);
-    });
+   
 
-  connection.on('ReceiveOrder', async (order, selectedFoodItems) => {
+  connection.on('ReceiveOrder', async (order, selectedFoodItems, receivedPhone) => {
+    phone.value = receivedPhone;
     console.log(order);
     console.log(selectedFoodItems);
     store.commit('notifications/setOrderNotifications', [...store.state.notifications.orderNotifications, order]);
@@ -149,21 +161,22 @@ onMounted(async () => {
 
 
 
-  const response = await getFullOrders();
-// Extract the array of orders from the $values property
-const orders = response;
-console.log(orders)
+const response = await getFullOrders();
+    // Extract the array of orders from the $values property
+    const orders = response;
+    console.log(orders)
 
-// Clean the orders data by removing the special properties
-  ordersInProgress.value = orders
-
-
+    // Clean the orders data by removing the special properties
+    ordersInProgress.value = orders
   
 });
 
-const completed = async (id, order) => {
-  await updateOrderToCompleted(id);
+const completed = async (orderId, order) => {
+  await updateOrderToCompleted(orderId);
   order.status = "Completed";
+
+  connection.invoke("SendOrderCompletedNotificationToUser", order.userId , orderId);
+      
 }
 </script>
 

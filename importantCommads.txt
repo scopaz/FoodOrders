@@ -5,3 +5,5 @@ npx ionic build && npx cap copy android && npx cap run android --target=Pixel_7_
 npx cap run android --target=Pixel_7_API_28  --external --public-host=http://localhost
 
 "FoodOrderDbContext": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=FoodOrdersDev;Integrated Security=True;TrustServerCertificate=True;"
+
+Server=tcp:foodordersdatabase.database.windows.net,1433;Initial Catalog=FoodOrdersDev;Persist Security Info=False;User ID=foodorder_admin;Password=Farid@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;

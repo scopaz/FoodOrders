@@ -54,12 +54,12 @@
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
   import { getFoodItems, createOrder, checkAuth } from '../api/foodOrders.api';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, inject } from 'vue';
   import { computed } from '@vue/reactivity';
   import { useStore } from 'vuex';
   import { getTimeForMorocco } from '../helper/timeUtils';
   import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-  import {createSignalRConnection} from '../services/signalRService'
+  // import {createSignalRConnection} from '../services/signalRService'
   import { defineComponent } from 'vue';
   import { Autoplay, Keyboard, Pagination, Scrollbar, Zoom, FreeMode} from 'swiper/modules';
   import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -83,7 +83,7 @@
   const foodtypes = ref(null);
   const selectedFoodType = ref(null);
   const adminNotification = ref('');
-  const connection = createSignalRConnection();
+  // const connection = createSignalRConnection();
   const store = useStore();
   const isAdmin = ref(false);
   let orderNotifications = ref('test');
@@ -92,6 +92,7 @@
   const userData = JSON.parse(localStorage.getItem('userData'));
 
   const isNative = Capacitor.isNativePlatform();
+  const connection = inject('signalRConnection'); // Use the injected connection
 
 
   const fetchFoodItems = async () => {
@@ -107,13 +108,7 @@
   onMounted(async () => {
     fetchFoodItems();
   
-    connection.start()
-      .then(() => {
-          console.log('Connected to SignalR hub');
-      })
-      .catch((error) => {
-          console.error('Error connecting to SignalR hub:', error);
-      });
+    
   
     try {
       const response = await checkAuth(); // Replace with the actual API call
@@ -124,7 +119,6 @@
     }
     
   });
-  
   
   connection.on('ReceiveOrder', (order) => {
     console.log(order);
@@ -177,11 +171,13 @@
       Quantity: quantity
     }));
     // Create the order object
+
     const order = {
       "CustomerName": userData.firstname + ' ' + userData.lastname,
       "TotalAmount": parseInt(total.value),
       "Status": "In Progress",
       "OrderItems": orderItems,
+      "UserId" : userData.userId
     };
     try {
     // Wait for the SignalR connection to start before sending the notification
@@ -195,7 +191,7 @@
     //add orderId (otherwise is set to 0)
     order.OrderId = response.data.orderID;
     
-    await connection.invoke('ReceiveOrderNotification', order, selectedFoodItems.value);
+    await connection.invoke('ReceiveOrderNotification', order, selectedFoodItems.value, userData.phone);
 
   }
   else{
@@ -206,7 +202,7 @@
     adminNotification.value = 'Error sending order notification';
   }
   
-  isAdmin.value ? router.push('/admin') : router.push('/userorders');
+  isAdmin.value ? router.push('/admin') : router.push({ name: 'userorders', query: { refreshKey: Date.now() } });
   };
   </script>
   
