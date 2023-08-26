@@ -1,9 +1,14 @@
 <template>
 
   <ion-page>
+    <ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
   <ion-content>
 
-    <ion-list-header>Profil</ion-list-header>
     <ion-list :inset="true">
       <ion-item>
     <user-profil />

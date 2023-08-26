@@ -1,6 +1,10 @@
 <template>
-
   <ion-page>
+    <ion-header>
+  <ion-toolbar>
+    <ion-title  class="ion-text-center">My Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
   <ion-content ref="content" class="ion-padding">
     <ion-refresher slot="fixed" :pull-factor="0.5" :pull-min="100" :pull-max="200" @ionRefresh="handleRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
@@ -19,7 +23,7 @@
           <p>Client: {{ order.customerName }}</p>
           <p>Date: {{ convertISOToCustomFormat(order.orderDate) }}</p>
           <p>Montant: {{ order.totalAmount }} DH</p>
-          <p v-if="order.status == 'In Progress'" style="color:blue">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
+          <p v-if="order.status == 'In Progress'" style="color:orange">Status: {{ order.status.replace('In Progress','En cours de préparation') }}</p>
           <p v-else style="color:green">Status: {{ order.status.replace('Completed','Completer') }}</p>
           <ul>
             <li v-for="orderItem in order.orderItems" :key="orderItem.orderItemID">
@@ -47,7 +51,7 @@
   import { LocalNotifications } from '@capacitor/local-notifications';
   
   import { useRoute } from 'vue-router';
-  import {  IonRefresher, IonRefresherContent, IonButton, IonCol, IonGrid, IonRow, IonPage, IonItem, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent } from '@ionic/vue';
+  import {  IonTitle, IonHeader, IonToolbar, IonRefresher, IonRefresherContent, IonButton, IonCol, IonGrid, IonRow, IonPage, IonItem, IonLabel, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent } from '@ionic/vue';
   import { computed, onMounted, ref, inject, watch } from 'vue';
   import { useStore } from 'vuex';
   import {convertISOToCustomFormat} from '../helper/timeUtils'

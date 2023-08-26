@@ -1,6 +1,11 @@
 <template>
   
   <ion-page>
+    <ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Home</ion-title>
+  </ion-toolbar>
+</ion-header>
   <ion-content ref="content" class="ion-padding">
   <div class="home-view">
 
@@ -50,7 +55,7 @@
   
   <script setup>
   import { Capacitor } from '@capacitor/core';
-  import { IonicSlides, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
+  import { IonTitle, IonHeader, IonToolbar, IonicSlides, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
   import { getFoodItems, createOrder, checkAuth } from '../api/foodOrders.api';

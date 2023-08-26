@@ -1,9 +1,9 @@
 <template>
   <IonCard class="food-item">
     <IonCardContent class="food-details">
-      <div class="food-name">{{ fooditem.name }}</div>
-      <div class="food-description">{{ fooditem.description }}</div>
-      <div class="food-price">{{ fooditem.price }} DH</div>
+      <ion-label class="food-name">{{ fooditem.name }}</ion-label>
+      <ion-label class="food-description">{{ fooditem.description }}</ion-label>
+      <ion-label class="food-price">{{ fooditem.price }} DH</ion-label>
     </IonCardContent>
     <div class="quantity-control">
       <IonButton @click="handleClick(Operations.Minus)" class="quantity-button" expand="full" size="small" shape="round">-</IonButton>
@@ -63,7 +63,6 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border: 1px solid #ddd;
   border-radius: 5px;
   margin: 10px 0;
   transition: background-color 0.3s;
@@ -82,10 +81,12 @@ onMounted(() => {
 .food-description {
   font-size: 0.9rem;
   color: #666;
+  display: block;
 }
 
 .food-price {
   font-size: 1.1rem;
+  display: block;
 }
 
 .quantity-control {
