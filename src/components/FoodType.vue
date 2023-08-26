@@ -5,6 +5,7 @@
       <!-- Render the food items for the selected food type -->
       <FoodItem v-for="fooditem in foodtype.foodItems" :key="fooditem.foodItemID" :fooditem="fooditem" @select="selectFoodItem" :selected-food-items="selectedFoodItems" />
     </div>
+
   </div>
 </template>
 

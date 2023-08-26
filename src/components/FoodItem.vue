@@ -1,22 +1,23 @@
 <template>
-  <div class="food-item">
-    <div class="food-details">
+  <IonCard class="food-item">
+    <IonCardContent class="food-details">
       <div class="food-name">{{ fooditem.name }}</div>
       <div class="food-description">{{ fooditem.description }}</div>
       <div class="food-price">{{ fooditem.price }} DH</div>
-    </div>
+    </IonCardContent>
     <div class="quantity-control">
-      <button @click="handleClick(Operations.Minus)" class="quantity-button">-</button>
+      <IonButton @click="handleClick(Operations.Minus)" class="quantity-button" expand="full" size="small" shape="round">-</IonButton>
       <div class="quantity">{{ quantity }}</div>
-      <button @click="handleClick(Operations.Plus)" class="quantity-button">+</button>
+      <IonButton @click="handleClick(Operations.Plus)" class="quantity-button" expand="full" size="small" shape="round">+</IonButton>
     </div>
-  </div>
+  </IonCard>
 </template>
 
 <script setup>
+
 import { defineProps, defineEmits, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
+import { IonicSlides, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
 const Operations = {
   Minus: 'minus',  
   Plus: 'plus',
@@ -65,7 +66,6 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin: 10px 0;
-  background-color: #f9f9f9;
   transition: background-color 0.3s;
 }
 
@@ -93,23 +93,14 @@ onMounted(() => {
   align-items: center;
 }
 
-.quantity-button {
-  padding: 5px 10px;
-  font-size: 1.2rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
 
-.quantity-button:hover {
-  background-color: #2980b9;
-}
+
+
 
 .quantity {
   font-size: 1.2rem;
   margin: 0 10px;
 }
+
+
 </style>

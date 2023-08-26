@@ -5,6 +5,7 @@
   <p>Email: {{ userData.email }}</p>
   <p>First Name: {{ userData.firstname }}</p>
   <p>Last Name: {{ userData.lastname }}</p>
+  <p>Phone: {{ userData.phone }}</p>
 </div>
 </template>
 

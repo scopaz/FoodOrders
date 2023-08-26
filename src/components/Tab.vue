@@ -9,12 +9,17 @@
           </ion-tab-button>
   
           <ion-tab-button v-if="isAdmin" tab="admin" href="/admin">
-            <ion-icon :icon="person" />
-            <ion-label>Admin</ion-label>
+            <ion-icon :icon="bagHandleSharp" />
+            <ion-label>Orders</ion-label>
           </ion-tab-button>
           <ion-tab-button v-if="!isAdmin" tab="userorders" href="/userorders">
             <ion-icon :icon="bagHandleSharp"></ion-icon>
             <ion-label>Orders</ion-label>
+          </ion-tab-button>
+
+          <ion-tab-button tab="profil" href="/profil">
+            <ion-icon :icon="person"></ion-icon>
+            <ion-label>Profil</ion-label>
           </ion-tab-button>
         </ion-tab-bar>
       </ion-tabs>

@@ -113,3 +113,13 @@ export const GetCustomerByUserId = async (userId) => {
     throw error;
   }
 };
+
+export const Logout = async () => {
+  try {
+    const response = await apiClient.post('/account/logout');
+    return response;
+  } catch (error) {
+    console.error('Error checking :', error);
+    throw error;
+  }
+};

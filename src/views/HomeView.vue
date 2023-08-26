@@ -1,8 +1,9 @@
 <template>
+  
   <ion-page>
   <ion-content ref="content" class="ion-padding">
   <div class="home-view">
-    <user-profil />
+
     <!-- <ion-card v-if="!isNative">
     <ion-card-header>
       <ion-card-title>Menu</ion-card-title>
@@ -50,7 +51,6 @@
   <script setup>
   import { Capacitor } from '@capacitor/core';
   import { IonicSlides, IonButton, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonItem, IonThumbnail, IonLabel, IonList} from '@ionic/vue';
-  import UserProfil from '../components/UserProfil.vue';
   import FoodType from '../components/FoodType.vue';
   import AdminView from '../views/AdminView.vue';
   import { getFoodItems, createOrder, checkAuth } from '../api/foodOrders.api';
@@ -254,7 +254,7 @@
   left: 0;
   width: 100%;
   text-align: center;
-  padding: 10px;
+  padding: 4px;
   font-size: 16px;
 }
 
@@ -287,7 +287,6 @@
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
 
   /* Center slide text vertically */
   display: flex;

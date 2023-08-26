@@ -8,6 +8,9 @@ const state = {
     removeFromSelectedFoodItems(state, payload) {
       state.selectedFoodItems.pop();
     },
+    resetSelectedFoodItems(state) {
+      state.selectedFoodItems = [];
+    },
   };
   const actions = {};
   const getters = {

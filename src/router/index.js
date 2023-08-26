@@ -5,6 +5,7 @@ import RegisterPage from '../views/RegisterPage.vue'
 import AboutPage from '../views/AboutView.vue'
 import AdminView from '../views/AdminView.vue'
 import OrdersView from '../views/OrdersView.vue'
+import ProfilView from '../views/ProfilView.vue'
 import {checkAuth} from "../api/foodOrders.api"
 import Tab from '../components/Tab.vue';
 
@@ -46,6 +47,12 @@ const router = createRouter({
           path: '/userorders',
           name: 'userorders',
           component: OrdersView,
+          meta: { requiresAuth: true, requiresAdmin: false } // Add this meta property to indicate the route requires authentication and admin role
+        },
+        {
+          path: '/profil',
+          name: 'profil',
+          component: ProfilView,
           meta: { requiresAuth: true, requiresAdmin: false } // Add this meta property to indicate the route requires authentication and admin role
         }
       ]
